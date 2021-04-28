@@ -1,4 +1,4 @@
-package org.jetbrains.plugins.template
+package com.github.ejin66.jemoplugin
 
 import com.intellij.AbstractBundle
 import org.jetbrains.annotations.NonNls

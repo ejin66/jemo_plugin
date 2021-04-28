@@ -1,6 +1,6 @@
-package org.jetbrains.plugins.template.services
+package com.github.ejin66.jemoplugin.services
 
-import org.jetbrains.plugins.template.MyBundle
+import com.github.ejin66.jemoplugin.MyBundle
 
 class MyApplicationService {
 
