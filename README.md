@@ -2,21 +2,15 @@
 
 <!-- Plugin description -->
 
-将json文件转为Dart代码，支持null safety. [项目地址](https://github.com/ejin66/jemo_plugin)
+将json文件转为Dart代码，支持null safety. 
 
-<br />
+[项目地址](https://github.com/ejin66/jemo_plugin)
 
 点击“Tools - Jemo Json Generate”或者“右键菜单 - Jemo Json Generate” 开始转。
 
-<br />
-
 > Tools中会自动将`lib/model/json/*.json`或`lib/src/mode/json/*.json`的所有json文件转换
 
-<br />
-
 > 或选择json文件，右键选择`Jemo Json Generate`，进行单个文件转换
-
-<br />
 
 通过增加注释的方式，来标记一些信息，如： 
 - 设置可空不可空
