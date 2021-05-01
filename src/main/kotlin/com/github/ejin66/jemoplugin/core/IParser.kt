@@ -5,5 +5,4 @@ interface IParser {
     fun parse(data: ByteArray): List<Node>
 
     fun lineFeed(): String
-
 }

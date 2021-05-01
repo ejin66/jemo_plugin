@@ -52,5 +52,4 @@ class DataObjectNode(isArray: Boolean) : MultiNode() {
     var cls = ""
     var alias = ""
     var nullable = true
-
 }

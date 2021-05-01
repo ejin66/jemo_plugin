@@ -6,3 +6,8 @@ formatting:
     continuationIndentSize: 8
   ParameterListWrapping:
     indentSize: 8
+
+complexity:
+  ComplexMethod:
+    ignoreNestingFunctions: true
+    threshold: 80

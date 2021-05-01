@@ -1,6 +1,6 @@
 package com.github.ejin66.jemoplugin.core.impl
 
-import com.github.ejin66.jemoplugin.core.*
+import com.github.ejin66.jemoplugin.core.* // ktlint-disable no-wildcard-imports
 import java.nio.charset.Charset
 
 class ParserImpl : IParser {
@@ -114,7 +114,7 @@ class ParserImpl : IParser {
 
     private fun parseHeader(): Node {
         if (cachedMark.isEmpty()) {
-            throw Exception("json header is absent")
+            throw Exception("the mark of the json root is absent")
         }
 
         val mark = RootMark()
@@ -196,7 +196,6 @@ class ParserImpl : IParser {
 
         return ValueType.Int
     }
-
 
     private fun readLineFeed(source: String): String {
         var lineFeed = ""

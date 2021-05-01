@@ -10,11 +10,9 @@ class Jemo(var parser: IParser, var generator: IGenerator) {
         return generator.generate(nodes, parser.lineFeed())
     }
 
-
     companion object {
         fun dart(source: ByteArray): String {
             return Jemo(ParserImpl(), GeneratorImpl()).start(source)
         }
     }
-
 }

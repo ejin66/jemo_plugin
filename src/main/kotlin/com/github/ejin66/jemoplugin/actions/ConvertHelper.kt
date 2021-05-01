@@ -9,7 +9,6 @@ import java.io.FileOutputStream
 class ConvertHelper {
 
     companion object {
-
         fun convert(geneDirPath: String, sourcePath: String) {
             val inputFile = File(sourcePath)
 
@@ -39,5 +38,4 @@ class ConvertHelper {
             return Jemo.dart(data).toByteArray()
         }
     }
-
 }

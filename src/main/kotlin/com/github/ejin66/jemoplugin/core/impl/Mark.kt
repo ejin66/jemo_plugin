@@ -20,7 +20,6 @@ open class Mark {
         }
         return result
     }
-
 }
 
 class ImportMark : Mark() {
@@ -34,7 +33,7 @@ class ImportMark : Mark() {
     }
 }
 
-class RootMark: Mark() {
+class RootMark : Mark() {
     var cls = ""
     var sup = ""
 
@@ -47,10 +46,9 @@ class RootMark: Mark() {
             sup = markDict["super"]!!
         }
     }
-
 }
 
-open class LeafMark: Mark() {
+open class LeafMark : Mark() {
     var alias = ""
     var nullable = true
 
@@ -65,7 +63,7 @@ open class LeafMark: Mark() {
     }
 }
 
-class ObjectMark: LeafMark() {
+class ObjectMark : LeafMark() {
     var cls = ""
 
     override fun read(mark: String) {
@@ -74,8 +72,4 @@ class ObjectMark: LeafMark() {
             cls = markDict["class"]!!
         }
     }
-
 }
-
-
-

@@ -1,9 +1,9 @@
 package com.github.ejin66.jemoplugin.actions
 
-import com.github.ejin66.jemoplugin.core.Jemo
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
-import java.io.*
+import com.intellij.openapi.ui.Messages
+import java.io.File
 
 class JemoAction() : AnAction() {
 
@@ -28,13 +28,15 @@ class JemoAction() : AnAction() {
         val geneDir = File(geneDirPath)
         if (geneDir.exists()) geneDir.delete()
 
-        jsonDir.list()?.forEach {
-            ConvertHelper.convert(geneDirPath, "$jsonDir/$it")
+        try {
+            jsonDir.list()?.forEach {
+                ConvertHelper.convert(geneDirPath, "$jsonDir/$it")
+            }
+        } catch (e: Exception) {
+            e.message?.run {
+                Messages.showErrorDialog(this, "JEMO")
+            }
         }
-
         return true
     }
-
-
-
 }

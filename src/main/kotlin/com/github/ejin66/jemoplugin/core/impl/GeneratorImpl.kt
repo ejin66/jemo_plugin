@@ -1,6 +1,6 @@
 package com.github.ejin66.jemoplugin.core.impl
 
-import com.github.ejin66.jemoplugin.core.*
+import com.github.ejin66.jemoplugin.core.* // ktlint-disable no-wildcard-imports
 
 class GeneratorImpl : IGenerator {
 
@@ -81,7 +81,7 @@ class GeneratorImpl : IGenerator {
             toJson += "$space$space${nodeToJson(child)}$lineFeed"
 
             var tmpNode: Node = child
-            while(true) {
+            while (true) {
                 if (tmpNode !is DataObjectNode) break
 
                 if (tmpNode.children.isEmpty()) break
@@ -100,13 +100,19 @@ class GeneratorImpl : IGenerator {
             }
         }
 
-        var result = JsonTemplate.template(cls, extends, clsArgs.trimEnd(), clsConstructionArgs.trimEnd(), fromJson.trimEnd(), toJson.trimEnd())
+        var result = JsonTemplate.template(
+            cls,
+            extends,
+            clsArgs.trimEnd(),
+            clsConstructionArgs.trimEnd(),
+            fromJson.trimEnd(),
+            toJson.trimEnd()
+        )
 
         subNodes.forEach { result += lineFeed + lineFeed + generateNode(it) }
 
         return result
     }
-
 
     private fun geneClassName(): String {
         clsNumber++
@@ -279,5 +285,4 @@ class GeneratorImpl : IGenerator {
 
         throw Exception("node to from json failed, at line: ${node.source}")
     }
-
 }
