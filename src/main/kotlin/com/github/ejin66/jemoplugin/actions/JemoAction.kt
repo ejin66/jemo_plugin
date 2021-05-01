@@ -1,5 +1,6 @@
 package com.github.ejin66.jemoplugin.actions
 
+import com.github.ejin66.jemoplugin.core.Jemo
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import java.io.*
@@ -27,34 +28,13 @@ class JemoAction() : AnAction() {
         val geneDir = File(geneDirPath)
         if (geneDir.exists()) geneDir.delete()
 
-        jsonDir.listFiles { file -> file.name.endsWith(".json") }?.forEach {
-            val geneName = "$geneDirPath/${it.name.dropLast(5)}.dart"
-
-            val geneFile = File(geneName)
-
-            if (!geneFile.parentFile.exists()) {
-                geneFile.parentFile.mkdirs()
-            }
-
-            val output = FileOutputStream(geneFile)
-            val input = FileInputStream(it)
-
-            try {
-                val source = BufferedInputStream(input).readBytes()
-                val convertData = convert(source) ?: return@forEach
-                output.write(convertData)
-                output.flush()
-            } finally {
-                output.close()
-                input.close()
-            }
+        jsonDir.list()?.forEach {
+            ConvertHelper.convert(geneDirPath, "$jsonDir/$it")
         }
 
         return true
     }
 
-    private fun convert(data: ByteArray): ByteArray? {
-        return data
-    }
+
 
 }

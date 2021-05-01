@@ -19,5 +19,10 @@
                 class="com.github.ejin66.jemoplugin.actions.JemoAction" text="Jemo Json Generate" description="Use jemo to generate code with json">
             <add-to-group group-id="ToolsMenu" anchor="last"/>
         </action>
+
+        <action id="com.github.ejin66.jemoplugin.actions.JemoOneFileAction"
+                class="com.github.ejin66.jemoplugin.actions.JemoOneFileAction" text="Jemo Json Generate" description="Use jemo to generate code with json">
+            <add-to-group group-id="ProjectViewPopupMenu" anchor="after" relative-to-action="SynchronizeCurrentFile"/>
+        </action>
     </actions>
 </idea-plugin>
