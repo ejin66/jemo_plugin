@@ -157,6 +157,9 @@ class GeneratorImpl : IGenerator {
                     node.cls.isNotEmpty() -> {
                         cls = node.cls
                     }
+                    node.children.isEmpty() -> {
+                        cls = "dynamic"
+                    }
                     node.name.isNotEmpty() -> {
                         val name = nodeName(node)
                         cls = name[0].toUpperCase() + name.substring(1)
@@ -206,7 +209,7 @@ class GeneratorImpl : IGenerator {
     }
 
     private fun mapToTypeList(nodeAry: DataObjectNode): String {
-        val node = nodeAry.children.first()
+        val node = nodeAry.children.firstOrNull() ?: return "e"
 
         return when (node.type) {
             ValueType.Double -> "e.toDouble()"
@@ -216,7 +219,7 @@ class GeneratorImpl : IGenerator {
     }
 
     private fun typeListToMap(nodeAry: DataObjectNode): String {
-        val node = nodeAry.children.first()
+        val node = nodeAry.children.firstOrNull() ?: return "e"
 
         return when (node.type) {
             ValueType.Double, ValueType.Int, ValueType.String, ValueType.Bool -> "e"
@@ -238,9 +241,13 @@ class GeneratorImpl : IGenerator {
             val json = "json['${node.name}']"
 
             if (node.type == ValueType.Object) {
+                if (node.children.isEmpty()) {
+                    return "${nodeName(node)}: $json,"
+                }
+
                 var text = "${nodeToClass(node)}.fromJson($json)"
                 if (node.nullable) {
-                    text = "$json != null ? $json : null"
+                    text = "$json != null ? $text : null"
                 }
                 text = "${nodeName(node)}: $text,"
                 return text
@@ -266,8 +273,12 @@ class GeneratorImpl : IGenerator {
 
         if (node is DataObjectNode) {
             if (node.type == ValueType.Object) {
-                val nullCode = if (node.nullable) "?" else ""
-                var text = "${nodeName(node)}$nullCode.toJson()"
+                var text = if (node.children.isEmpty()) {
+                    nodeName(node)
+                } else {
+                    val nullCode = if (node.nullable) "?" else ""
+                    "${nodeName(node)}$nullCode.toJson()"
+                }
                 text = "\"${node.name}\": $text,"
                 return text
             }

@@ -25,6 +25,7 @@ class JemoOneFileAction : AnAction() {
         try {
             ConvertHelper.convert(geneDirPath, file.path)
         } catch (e: Exception) {
+            e.printStackTrace()
             val error = e.message ?: return
             Messages.showErrorDialog(error, "JEMO")
         }

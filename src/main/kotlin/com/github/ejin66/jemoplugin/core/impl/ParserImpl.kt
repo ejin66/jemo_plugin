@@ -10,6 +10,7 @@ class ParserImpl : IParser {
     private var root: Node? = null
     private var nodes = mutableListOf<Node>()
     private var cachedMark = ""
+    private var lineNumber = 0
 
     override fun parse(data: ByteArray): List<Node> {
         val source = data.toString(Charset.defaultCharset())
@@ -22,10 +23,11 @@ class ParserImpl : IParser {
         val segments = mutableListOf<List<String>>()
 
         var segment = mutableListOf<String>()
+
         lines.forEach {
             if (it.isEmpty()) {
                 if (segment.isNotEmpty()) segments.add(segment)
-                segment = mutableListOf()
+                segment = mutableListOf("")
                 return@forEach
             }
 
@@ -33,6 +35,7 @@ class ParserImpl : IParser {
         }
         if (segment.isNotEmpty()) segments.add(segment)
 
+        lineNumber = 0
         return segments.mapNotNull { parseRoot(it) }
     }
 
@@ -43,10 +46,10 @@ class ParserImpl : IParser {
     private fun parseRoot(segment: List<String>): Node? {
         currentNode = null
         root = null
-        var lineNumber = 0
 
         for (line in segment) {
             lineNumber++
+
             val node = parseLine(line.trim(), lineNumber)
             if (root == null) root = node
         }
@@ -54,6 +57,8 @@ class ParserImpl : IParser {
     }
 
     private fun parseLine(line: String, lineNumber: Int): Node? {
+        if (line.isEmpty()) return null
+
         if (line.contains("}")) {
             currentNode = currentNode?.parent
             return null
@@ -99,8 +104,10 @@ class ParserImpl : IParser {
             return null
         }
 
-        val node = parseLeaf(line, lineNumber)
-        currentNode?.attach(node)
+        parseLeaf(line, lineNumber).run {
+            currentNode?.attach(this)
+        }
+
         return null
     }
 
@@ -129,7 +136,7 @@ class ParserImpl : IParser {
 
     private fun parseLeaf(line: String, lineNumber: Int): Node {
         val node = DataLeafNode()
-        node.source = "$line, line number: $lineNumber"
+        node.source = "$lineNumber, source: $line"
 
         if (cachedMark.isNotEmpty()) {
             val mark = LeafMark()
@@ -148,7 +155,7 @@ class ParserImpl : IParser {
 
     private fun parseObject(line: String, lineNumber: Int, isArray: Boolean): Node {
         val node = DataObjectNode(isArray)
-        node.source = "$line, line number: $lineNumber"
+        node.source = "$lineNumber, source: $line"
 
         if (cachedMark.isNotEmpty()) {
             val mark = ObjectMark()
@@ -170,7 +177,7 @@ class ParserImpl : IParser {
     }
 
     private fun readValue(line: String): String {
-        val result = Regex("\"(.*)\":").find(line)
+        val result = Regex(".*:(.*)").find(line)
         var value = if (result == null) {
             line
         } else {
@@ -194,7 +201,11 @@ class ParserImpl : IParser {
             return ValueType.Double
         }
 
-        return ValueType.Int
+        if (value.toIntOrNull() != null) {
+            return ValueType.Int
+        }
+
+        return ValueType.Unknown
     }
 
     private fun readLineFeed(source: String): String {
